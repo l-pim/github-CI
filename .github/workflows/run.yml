@@ -1,0 +1,27 @@
+name: FastAPI run 
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  fastapi-run:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        run:
+          sudo apt-get update && sudo apt-get install -y python3 python3-pip
+
+      - name: Install Backend Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r ./requirements.txt
+
+      - name: Start Backend Server
+        run: uvicorn app.main:app --reload &
